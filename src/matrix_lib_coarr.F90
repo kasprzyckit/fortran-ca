@@ -38,7 +38,6 @@ subroutine mm(first, second, multiply, n, m, o)
     syncall()
 
     if (this_image() .EQ. 1) then
-        write (*, *) ichunk
         do i=2, num_images()
             multiply(:, obeg[i]:oend[i]) = multiply(:, obeg[i]:oend[i])[i, 1]
         enddo
