@@ -44,7 +44,7 @@ end subroutine
 !> Performs gaussian elimination
 !! 
 !! @param A matrix of coefficients
-!! @param X solution vector
+!! @param X result column
 !! @param N size of the matrix
 subroutine gauss_elimination(A, X, N)
     integer(kind=4), intent(in) :: N
@@ -57,8 +57,8 @@ subroutine gauss_elimination(A, X, N)
     do I = 1,N
         do J = 1,N
             if (I .NE. J) then
-                C = A(I, J) / A(I, I)
-                if (C .NE. 0) then
+                if (A(I, J) .NE. 0) then
+                    C = A(I, J) / A(I, I)
                     A(:, J) = A(:, J) - C * A(:, I)
                     X(J) = X(J) - C*X(I)
                 endif

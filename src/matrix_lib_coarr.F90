@@ -4,7 +4,7 @@ contains
 subroutine mm(first, second, multiply, n, m, o)
     implicit none
     integer(kind= 4), intent(in) :: n, m, o
-    real(kind= 8),intent(in), codimension[num_images(), *], dimension(n,m) :: first
+    real(kind= 8),intent(in), codimension[num_images(), *] :: first(n,m)
     real(kind= 8),intent(in), codimension[num_images(), *] :: second(m ,o)
     real(kind= 8),intent(out), codimension[num_images(), *] :: multiply(n,o)
     integer, codimension[:], allocatable :: obeg, oend
@@ -47,26 +47,31 @@ end subroutine
 
 subroutine gauss_elimination(A, X, N)
     integer(kind=4), intent(in) :: N
-    real(kind= 8), intent(inout) :: A(N, N), X(N)
+    real(kind= 8), intent(inout), codimension[num_images(), *]  :: A(N, N), X(N)
     integer(kind= 4) :: i, j
     real(kind= 8) :: C
 
+
+    syncall()
     do I = 1,N
-        do J = 1,N
+        do J = this_image(),N, num_images()
             if (I .NE. J) then
-                C = A(I, J) / A(I, I)
-                if (C .NE. 0) then
-                    A(:, J) = A(:, J) - C * A(:, I)
-                    X(J) = X(J) - C*X(I)
+                if (A(I, J)[1,1] .NE. 0) then
+                    C = A(I, J)[1,1] / A(I, I)[1,1]
+                    A(:, J)[1,1] = A(:, J)[1,1] - C * A(:, I)[1,1]
+                    X(J)[1,1] = X(J)[1,1] - C*X(I)[1,1]
                 endif
-                if (A(I, I) .NE. 1) then
-                    X(I) = X(I) / A(I, I)
-                    A(:, I) = A(:, I) / A(I, I)
+                if (A(I, I)[1,1] .NE. 1) then
+                    X(I)[1,1] = X(I)[1,1] / A(I, I)[1,1]
+                    A(:, I)[1,1] = A(:, I)[1,1] / A(I, I)[1,1]
                 endif
             endif
         enddo
+        syncall()
     enddo
-    X = X * real(N * (N + 1) * (-1))
+    if (this_image() .EQ. 1) then
+        X = X * real(N * (N + 1) * (-1))
+    endif
 end subroutine
 
 end module matrix_lib_coarr

@@ -23,7 +23,7 @@ subroutine run_gauss(N)
     use matrix_lib, only : gauss_elimination
 
     real(kind= 8), allocatable :: A(:, :), X(:)
-    real :: start, finish
+    integer(kind=4) :: start, finish, count_rate, count_max
     integer(kind=4) :: i
     integer(kind=4), intent(in) :: N
     real(kind = 8) :: P1, P2, h2
@@ -49,10 +49,10 @@ subroutine run_gauss(N)
     X(:) = 0.0
     X(N) = 1
 
-    call cpu_time(start)
+    call system_clock(start, count_rate, count_max)
     call gauss_elimination(A, X, N)
-    call cpu_time(finish)
-    print '(i8, f10.4)',N, finish-start
+    call system_clock(finish, count_rate, count_max)
+    print '(i8, f10.4)',N, real(finish-start)/real(count_rate)
 
 end subroutine
 
@@ -70,10 +70,8 @@ program main
 
     select case (mode)
         case (0)
-            write (*, *) "mm"
             call run_mm(n)
         case (1)
-            write (*, *) "gauss"
             call run_gauss(n)
         case default
             write (*, *) "incorrect mode"
