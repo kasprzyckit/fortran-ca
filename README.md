@@ -39,12 +39,10 @@ On the image above:
 * magneta - **Multi-image, one image**
 * cyan - **Multi-image, two images**
 * red - **Multi-image, three images**
-<br />
-<br />
+
 **Gaussian elimination**
-For N ∈ <100, 2500> with step of 100, with -02 compilation flag.<br />
+For N ∈ <100, 2500> with step of 100, with -02 compilation flag.
 ![ge](https://github.com/kasprzyckit/fortran-ca/blob/master/results/ge.png)
-<br />
 On the image above:
 * black - **Single-image version**
 * magneta - **Multi-image, one image**
