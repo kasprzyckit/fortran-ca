@@ -27,7 +27,6 @@ set(SRC "${PROJECT_SOURCE_DIR}/src")
 set(TESTS "${PROJECT_SOURCE_DIR}/tests")
 set(mm_SRC
   ${SRC}/matrix_lib.F90
-  ${SRC}/run_lib.F90
   )
 set(mm_MAIN main.F90)
 

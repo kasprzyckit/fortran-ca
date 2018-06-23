@@ -36,7 +36,6 @@ def test_gaussian(N):
     X[N-1] = 1
 
     A, X = ml.gauss_elimination(A, X)
-    X = X * (N * (N + 1) * (-1))
     print(X)
 
 _N = int(sys.argv[1])

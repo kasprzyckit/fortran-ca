@@ -44,7 +44,7 @@ end subroutine
 !> Performs gaussian elimination
 !! 
 !! @param A matrix of coefficients
-!! @param X result column
+!! @param X solution vector
 !! @param N size of the matrix
 subroutine gauss_elimination(A, X, N)
     integer(kind=4), intent(in) :: N
@@ -69,6 +69,8 @@ subroutine gauss_elimination(A, X, N)
             endif
         enddo
     enddo
+
+    X = X * real(N * (N + 1) * (-1))
 end subroutine
 
 end module matrix_lib

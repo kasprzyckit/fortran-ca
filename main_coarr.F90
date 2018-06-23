@@ -1,13 +1,13 @@
 subroutine run_mm(N)
-    use matrix_lib, only : mm
+    use matrix_lib_coarr, only : mm
 
-    real(kind= 8), allocatable :: first(:, :), second(:, :), result(:, :)
-    integer(kind=4) :: start, finish, count_rate, count_max
+    real(kind= 8), allocatable, codimension[:, :], dimension(:, :) :: first, second, result
+    integer :: start, finish, count_rate, count_max
     integer(kind=4), intent(in) :: N
 
-    allocate(first(n, n))
-    allocate(second(n, n))
-    allocate(result(n, n))
+    allocate(first(n, n)[num_images(), *])
+    allocate(second(n, n)[num_images(), *])
+    allocate(result(n, n)[num_images(), *])
 
     first = 1
     second = 2
@@ -15,12 +15,15 @@ subroutine run_mm(N)
     call system_clock(start, count_rate, count_max)
     call mm(first, second, result, n, n, n)
     call system_clock(finish, count_rate, count_max)
-    print '(i8, f10.4)',N, real(finish-start)/real(count_rate)
+
+    if (this_image() .EQ. 1) then
+        print '(i8, f10.4)',N, real(finish-start)/real(count_rate)
+    endif
 
 end subroutine
 
 subroutine run_gauss(N)
-    use matrix_lib, only : gauss_elimination
+    use matrix_lib_coarr, only : gauss_elimination
 
     real(kind= 8), allocatable :: A(:, :), X(:)
     real :: start, finish
@@ -56,7 +59,7 @@ subroutine run_gauss(N)
 
 end subroutine
 
-program main
+program main_coarr
 
     integer(kind=4) :: n, mode
     integer(kind=4) :: l, s
@@ -70,7 +73,7 @@ program main
 
     select case (mode)
         case (0)
-            write (*, *) "mm"
+            ! write (*, *) "mm"
             call run_mm(n)
         case (1)
             write (*, *) "gauss"
@@ -79,4 +82,4 @@ program main
             write (*, *) "incorrect mode"
     end select
 
-end program main
+end program main_coarr
