@@ -31,15 +31,15 @@ The multi-image version of the library (**src/matrix_lib.F90**) should be MPI co
 ## Results
 For the detailed results check **results** directory.</br>
 **Matrix multiplication**
-For N ∈ <100, 2500> with step of 100, with -02 compilation flag.<br />
+For N ∈ <100, 2500> with step of 100, with -02 compilation flag.</br>
 ![mm](https://github.com/kasprzyckit/fortran-ca/blob/master/results/mm.png)
-<br />
+</br>
 On the image above:
 * black - **Single-image version**
 * magneta - **Multi-image, one image**
 * cyan - **Multi-image, two images**
 * red - **Multi-image, three images**
-
+</br>
 **Gaussian elimination**
 For N ∈ <100, 2500> with step of 100, with -02 compilation flag.
 ![ge](https://github.com/kasprzyckit/fortran-ca/blob/master/results/ge.png)
